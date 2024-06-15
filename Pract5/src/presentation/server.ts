@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import compression from 'compression';
+import compression from 'compression'; // Importa compression
 import path from 'path';
 
 interface Options {
@@ -7,7 +7,6 @@ interface Options {
   routes: Router;
   public_path?: string;
 }
-
 
 export class Server {
 
@@ -23,34 +22,30 @@ export class Server {
     this.routes = routes;
   }
 
-  
-  
   async start() {
-    
 
     //* Middlewares
-    this.app.use( express.json() ); // raw
-    this.app.use( express.urlencoded({ extended: true }) ); // x-www-form-urlencoded
+    this.app.use(express.json()); // raw
+    this.app.use(express.urlencoded({ extended: true })); // s
+
+    //* Agrega el middleware de compression
+    this.app.use(compression()); // 
 
     //* Public Folder
-    this.app.use( express.static( this.publicPath ) );
-
+    this.app.use(express.static(this.publicPath));
 
     //* Routes
-    this.app.use( this.routes );
-
+    this.app.use(this.routes);
 
     //* SPA
     this.app.get('*', (req, res) => {
-      const indexPath = path.join( __dirname + `../../../${ this.publicPath }/index.html` );
+      const indexPath = path.join(__dirname + `../../../${this.publicPath}/index.html`);
       res.sendFile(indexPath);
     });
-    
 
     this.app.listen(this.port, () => {
-      console.log(`Servidor escuchando en el puerto http://localhost:${ this.port }`);
+      console.log(`Servidor escuchando en el puerto http://localhost:${this.port}`);
     });
 
   }
-
 }
