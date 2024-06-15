@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Idioma {
+  id          Int       @id @default(autoincrement())
+  descripcion String
+  registros   Registro[]
+ 
+}
+
+model Palabra {
+  id          Int       @id @default(autoincrement())
+  palabra     String
+  deletreo    String
+  registros   Registro[]
+ 
+}
+
+model Registro {
+  id          Int       @id @default(autoincrement())
+  fecha       DateTime
+  hora        DateTime
+  ubicacion   String
+  idIdioma    Int
+  idPalabra   Int
+  deletreo    String?
+  silabas     String?
+  fonetica    String?
+  idioma      Idioma    @relation(fields: [idIdioma], references: [id])
+  palabra     Palabra   @relation(fields: [idPalabra], references: [id])
+}
